@@ -1,10 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./app.js";
-import "./index.css";
-import { Footer } from "./components/footer.js";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
 
 ReactDOM.render(
-  <App />,
-  document.getElementById("root")
+    <div><Header />
+        <div>
+        </div>
+        <Footer /></div>,
+    document.getElementById('root'),
 );
