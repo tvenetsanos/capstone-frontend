@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 // import SignUp from "./components/signUp.js"
 // import { makeStyles } from '@material-ui/core/styles';
 // import Card from '@material-ui/core/Card';
@@ -12,18 +12,26 @@ import React, { Component } from "react";
 // import MoodBadIcon from '@material-ui/icons/MoodBad';
 // import { MoodBad } from "@material-ui/icons";
 // import Grid from '@material-ui/core/Grid';
+import Footer from './components/footer.js';
+import Header from './components/header.js';
 
 class Main extends Component {
 
-    render() {
-        return (
-            <div>
-                <img class="home-image" src="https://i.ytimg.com/vi/FHytoCvj90w/maxresdefault.jpg"></img>
-                <h3>At puppy love we strive to bring dogs and dog owners alike together to create new bonds and experiences that our animals will cherish for a lifetime.</h3>
-                <h4>Sign Up today to get started!</h4>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <Header isLoggedIn={false} />
+        <img className='home-image' src='https://i.ytimg.com/vi/FHytoCvj90w/maxresdefault.jpg'></img>
+        <h3>
+          At puppy love we strive to bring dogs and dog owners
+          alike together to create new bonds and experiences that our animals
+          will cherish for a lifetime.
+        </h3>
+        <h4>Sign Up today to get started!</h4>
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default Main;
