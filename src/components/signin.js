@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
+import { TextField, Button, Input, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 
 class SignIn extends Component {
     constructor(props) {
@@ -22,6 +21,7 @@ class SignIn extends Component {
           const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: "include",
             body: JSON.stringify({ 
               email: this.state.email,
               password_digest: this.state.password
@@ -30,6 +30,7 @@ class SignIn extends Component {
           fetch("http://localhost:4000/dog/login", requestOptions)
           .then((res) => res.json())
           .then((data) => {
+            console.log(data)
             this.setState({
               redirect: true
             })
@@ -73,12 +74,20 @@ class SignIn extends Component {
             margin="dense"
             id="name"
             label="Password"
+            type='password'
             onBlur={this.handlePasswordChange}
             fullWidth
           />
         </DialogContent>
         <DialogActions>
           <a href="/signup">Don't have an account?</a>
+          <Link to={{
+                pathname: "/"
+            }}>
+            <Button color="primary">
+              Cancel
+            </Button>
+          </Link>
           <Button onClick={this.handleSignIn} color="primary">
                 Log in
           </Button>
@@ -87,12 +96,40 @@ class SignIn extends Component {
       {this.state.redirect && 
       <Redirect
             to={{
-            pathname: "/finddogs"
+            pathname: "/finddogs",
+            state: { 
+                    email: this.state.email,
+                    dogName: this.state.dogName,
+                    addressOne: this.state.addressOne,
+                    addressTwo: this.state.addressTwo,
+                    city: this.state.city,
+                    state: this.state.state,
+                    zipCode: this.state.zipCode
+                }
           }}
         />}
     </div>
     );
   }
 }
+
+{/* <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <Input
+            id="standard-adornment-password"
+            type={values.showPassword ? 'text' : 'password'}
+            value={values.password}
+            onChange={handleChange('password')}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
+            }
+          /> */}
  
 export default SignIn;

@@ -11,6 +11,7 @@ import SignUp from "./components/signup.js"
 import SignIn from "./components/signin.js"
 import DogHome from "./components/dogHome.js"
 import PrivateRoute from "./components/privateroute.js"
+import MessageCenter from "./components/messageCenter.js"
 import Main from "./main.js"
 
 
@@ -24,10 +25,9 @@ class App extends Component {
                             <PrivateRoute component={DogHome}
                                 path="/finddogs">
                             </PrivateRoute>
-                            {/* <PrivateRoute 
-                                component={WriteReview}
-                                path="/writereview">
-                            </PrivateRoute> */}
+                            <PrivateRoute component={MessageCenter}
+                                path="/message" exact>
+                            </PrivateRoute>
                             <Route path="/signup" exact>
                                 <SignUp />
                             </Route>

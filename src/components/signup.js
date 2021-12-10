@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Link } from "react-router-dom";
+import Geocode from "react-geocode";
 
 class SignUp extends Component {
     constructor(props) {
@@ -23,6 +24,7 @@ class SignUp extends Component {
             password: "",
             userDetailId: 0
         }
+        Geocode.setApiKey("AIzaSyAR8pjtTek4GgQP5MiIkfPVhc5XXD2rqbk");
     }
 
     handleClickOpen = () => {
@@ -38,11 +40,14 @@ class SignUp extends Component {
       };
 
       handleSignUp = () => {
-          console.log(this.state.email)
-          this.handleClose()
-          const requestOptions = {
+        let address = `${this.state.addressOne} ${this.state.city}, ${this.state.state} ${this.state.zipCode}`
+        Geocode.fromAddress(address).then(
+        (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: "include",
             body: JSON.stringify({ 
               email: this.state.email,
               password_digest: this.state.password,
@@ -51,16 +56,19 @@ class SignUp extends Component {
               address_two: this.state.addressTwo,
               city: this.state.city,
               state: this.state.state,
-              zip_code: this.state.zipCode
+              zip_code: this.state.zipCode,
+              lat: lat,
+              lng: lng
             })
           };
           fetch("http://localhost:4000/dog/signup", requestOptions)
-          .then((res) => res.json())
-          .then((data) => { 
-            console.log(data.id)
-            this.setState({
-              userDetailId: data.id
-          })})
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+          this.handleClose()
+          
       }
 
       handleEmailChange = (event) => {
@@ -113,10 +121,7 @@ class SignUp extends Component {
   render() {
     return (
      <div className="sign-up-button">
-      <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-        Sign up
-      </Button>
-      <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={true} onClose={this.handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -190,15 +195,19 @@ class SignUp extends Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            Cancel
-          </Button>
+          <a href="/login">Already have an account?</a>
+          <Link to={{
+                pathname: "/"
+            }}>
+            <Button color="primary">
+              Cancel
+            </Button>
+          </Link>
           <Link to={{
                 pathname: "/finddogs", 
                 state: { 
                     email: this.state.email,
                     dogName: this.state.dogName,
-                    userDetailId: this.state.userDetailId,
                 }
             }}>
             <Button onClick={this.handleSignUp} color="primary">
