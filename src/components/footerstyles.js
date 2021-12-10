@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const h1 = styled.div`
 position: center;
-color: yellow;
+color: #ebc344;
 `;
 
 export const Box = styled.div`
@@ -47,7 +47,7 @@ grid-gap: 20px;
 `;
 
 export const FooterLink = styled.a`
-color: yellow;
+color: #ebc344;
 margin-bottom: 20px;
 font-size: 18px;
 text-decoration: none;

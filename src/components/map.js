@@ -33,11 +33,19 @@ export class MapContainer extends Component {
   }
 
   renderInfoWindowButton = () => {
-    const infoBody = (<div>
+    fetch("https://dog.ceo/api/breeds/image/random")
+      .then((res) => res.json())
+      .then((data) => {
+        const infoBody = (<div style={{margin: '0 auto'}}>
+        <img style={{maxHeight: '10rem', maxWidth: '10rem'}} className='size' src={data.message}></img>
         <h1>{this.state.dog && this.state.dog.dog_name}</h1>
+        <h3>{this.state.dog.address_one}</h3>
+        <h3>{this.state.dog.address_two}</h3>
+        <h3>{this.state.dog.city} {this.state.dog.zip_code}</h3>
         <Link onClick={() => {this.props.redirect(this.state.dog.id)}}>message</Link>
-      </div>);
-    ReactDOM.render(infoBody, document.getElementById("info-window"));
+        </div>);
+        ReactDOM.render(infoBody, document.getElementById("info-window"));
+      })
   }
 
   buildMarkers = () => {

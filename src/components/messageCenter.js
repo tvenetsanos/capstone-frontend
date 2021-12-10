@@ -1,13 +1,23 @@
 import React, { Component } from "react";
-import { TextField, Button, Input, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
+import { TextField, Button, FilledInput, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 
 class MessageCenter extends Component {
   constructor(props) {
     super(props)
     this.state = {
       messages: [],
-      newMessage: ""
+      newMessage: "",
+      updateMessages: false
     }
+  }
+
+  componentDidUpdate() {
+    if (this.state.updateMessages) {
+      this.getMessages()
+    }
+  }
+
+  componentDidMount() {
     this.getMessages()
   }
 
@@ -17,14 +27,16 @@ class MessageCenter extends Component {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include"
     };
-    fetch("http://localhost:4000/messages?dogTo=2", requestOptions)
+    fetch(`http://localhost:4000/messages?dogTo=${this.props.location.state.dogTo}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data.messages)
         this.setState({
-          messages: data.messages
+          messages: data.messages,
+          updateMessages: false
         })
       })
-  }
+    }
 
   sendMessage = () => {
     const requestOptions = {
@@ -39,8 +51,10 @@ class MessageCenter extends Component {
     fetch("http://localhost:4000/messages", requestOptions)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         this.setState({
-          newMessage: "" 
+          newMessage: "",
+          updateMessages: true
         })
       })
   }
@@ -55,17 +69,34 @@ class MessageCenter extends Component {
     if (this.state.messages) {
       return this.state.messages.map((message, index) => {
         let float;
-        if (message.dog_to === this.props.location.state.dogTo) {
+        let color;
+        let margin
+        if (message.dog_to !== this.props.location.state.dogTo) {
           float = "left"
+          color = "Grey"
+          return (<p key={index} style={{backgroundColor: color,
+                    padding:10,
+                    borderRadius: 5, 
+                    marginTop: 5,
+                    marginRight: "25%",
+                    maxWidth: '25%',
+                    alignSelf: 'flex-start',
+                    color: 'white',
+                    borderRadius: 20,}}>{message.message}</p>)
         }
         else {
           float = "right"
-        }
-        return (
-          <p key={index} style={{textAlign: float, backgroundColor: "#dedede",
+          color = "#0078fe"
+          return (<p key={index} style={{backgroundColor: color,
                     padding:10,
-                    borderRadius: 5}}>{message.message}</p>
-        )
+                    borderRadius: 5, 
+                    marginTop: 5,
+                    marginLeft: "25%",
+                    maxWidth: '25%',
+                    alignSelf: 'flex-start',
+                    color: 'white',
+                    borderRadius: 20,}}>{message.message}</p>)
+        }
       })
     }
     else {
@@ -77,12 +108,14 @@ class MessageCenter extends Component {
 
   render() {
     return (
-        <div>
+        <div style={{paddingLeft: "20rem", paddingRight: "20rem", paddingBottom: "5rem", paddingTop: "5rem", width: "100%"}}>
           {this.displayMessages()} 
-          <Input
+          <FilledInput
+            style={{}}
+            value={this.state.newMessage}
             endAdornment={
               <InputAdornment position="end">
-                <Button variant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
+                <Button style={{marginLeft: "33rem"}} variant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
               </InputAdornment>
             }
             onChange={this.handleNewMessageChange}

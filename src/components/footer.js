@@ -10,8 +10,8 @@ import {
 
 const Footer = () => {
   return (
-    <Box>
-      <h1 style={{color: 'green',
+    <Box style={{bottom: "unset"}}>
+      <h1 style={{color: '#ebc344',
         textAlign: 'center',
         marginTop: '-50px'}}>
         Puppy Love: A place to find Puppy Play Dates

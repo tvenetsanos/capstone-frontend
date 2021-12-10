@@ -39,6 +39,7 @@ class DogHome extends Component {
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     };
     fetch("http://localhost:4000/dogs", requestOptions)
       .then((res) => res.json())
