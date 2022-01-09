@@ -9,7 +9,7 @@ import {
 //import Main from "./main.js"
 import SignUp from "./components/signup.js"
 import SignIn from "./components/signin.js"
-import DogHome from "./components/dogHome.js"
+import UserHome from "./components/userHome.js"
 import PrivateRoute from "./components/privateroute.js"
 import MessageCenter from "./components/messageCenter.js"
 import Main from "./main.js"
@@ -22,7 +22,7 @@ class App extends Component {
                 <Router>
                     <div>
                         <Switch>
-                            <PrivateRoute component={DogHome}
+                            <PrivateRoute component={UserHome}
                                 path="/finddogs">
                             </PrivateRoute>
                             <PrivateRoute component={MessageCenter}
