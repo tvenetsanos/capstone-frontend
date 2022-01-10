@@ -10,7 +10,7 @@ import {
 
 const Footer = () => {
   return (
-    <Box style={{bottom: "unset"}}>
+    <Box style={{bottom: "unset", zIndex: "-1", position: "relative"}}>
       <h1 style={{color: '#ebc344',
         textAlign: 'center',
         marginTop: '-50px'}}>

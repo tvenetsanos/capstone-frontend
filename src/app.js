@@ -12,6 +12,8 @@ import SignIn from "./components/signin.js"
 import UserHome from "./components/userHome.js"
 import PrivateRoute from "./components/privateroute.js"
 import MessageCenter from "./components/messageCenter.js"
+import EditAccount from "./components/editAccount.js"
+import ViewMessages from "./components/viewMessages.js"
 import Main from "./main.js"
 
 
@@ -23,10 +25,16 @@ class App extends Component {
                     <div>
                         <Switch>
                             <PrivateRoute component={UserHome}
-                                path="/finddogs">
+                                path="/findDogs">
                             </PrivateRoute>
                             <PrivateRoute component={MessageCenter}
                                 path="/message" exact>
+                            </PrivateRoute>
+                            <PrivateRoute component={EditAccount}
+                                path="/editAccount" exact>
+                            </PrivateRoute>
+                            <PrivateRoute component={ViewMessages}
+                                path="/viewMessages" exact>
                             </PrivateRoute>
                             <Route path="/signup" exact>
                                 <SignUp />

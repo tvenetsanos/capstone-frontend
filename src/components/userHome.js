@@ -64,9 +64,9 @@ class UserHome extends Component {
 
   render() {
     return (
-        <div style={{ height: '50vh', width: '50%' }}>
+        <div style={{ height: '50vh', width: '100%', zIndex: "-1", position: "relative"}}>
             {this.state.renderMap && <Map usersDogs={this.state.usersDogs.users} lat={this.state.lat} lng={this.state.lng} redirect={this.redirectToMessageCenter} />}
-            {this.state.userTo && <Redirect to={{pathname: "/message", state: {userTo: this.state.userTo, userFrom: this.state.userFrom}}} />}
+            {this.state.userTo && <Redirect to={{pathname: "/message", state: {userTo: this.state.userTo.id, userFrom: this.state.userFrom.id}}} />}
         </div>
     );
   };

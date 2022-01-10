@@ -7,7 +7,8 @@ class MessageCenter extends Component {
     this.state = {
       messages: [],
       newMessage: "",
-      updateMessages: false
+      updateMessages: false,
+      conversation: null
     }
   }
 
@@ -19,26 +20,26 @@ class MessageCenter extends Component {
 
   componentDidMount() {
     this.getConversation()
-    console.log(this.props.location.state.userTo)
-    console.log(this.props.location.state.userFrom)
   }
 
   getConversation = () => {
-    console.log(this.props.location.userTo)
+    console.log(this.props.location.state.userTo)
     console.log(this.props.location.state.userFrom)
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
       body: JSON.stringify({ 
-        first_user_id: this.props.location.state.userTo.id,
-        second_user_id: this.props.location.state.userFrom.id
+        first_user_id: this.props.location.state.userTo,
+        second_user_id: this.props.location.state.userFrom
       })
     };
     fetch(`http://localhost:4000/conversation`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
+        this.setState({
+          conversation: data.conversation
+        })
         this.getMessages(data.conversation.id)
       })
     }
@@ -67,11 +68,12 @@ class MessageCenter extends Component {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
       body: JSON.stringify({ 
-        dog_to: this.props.location.state.userTo,
+        user_id: this.props.location.state.userFrom,
+        conversation_id: this.state.conversation.id,
         message: this.state.newMessage
       })
     };
-    fetch("http://localhost:4000/messages", requestOptions)
+    fetch("http://localhost:4000/message", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
@@ -93,7 +95,9 @@ class MessageCenter extends Component {
       return this.state.messages.map((message, index) => {
         let float;
         let color;
-        if ("" + message.user_id !== "" + this.props.location.state.userFrom.id) {
+        console.log(message.user_id)
+        console.log(this.props.location.state.userFrom)
+        if ("" + message.user_id !== "" + this.props.location.state.userFrom) {
           float = "left"
           color = "Grey"
           return (<p key={index} style={{backgroundColor: color,

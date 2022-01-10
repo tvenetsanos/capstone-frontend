@@ -269,7 +269,7 @@ class SignUp extends Component {
             </Button>
           </Link>
           <Link to={{
-                pathname: "/finddogs", 
+                pathname: "/findDogs", 
                 state: { 
                     email: this.state.email,
                     name: this.state.name,

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import { Redirect } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,84 +8,85 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from "react-router-dom";
-import Menu from '@material-ui/core/Menu';
+import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+// import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ForumIcon from '@material-ui/icons/Forum';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 
-class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      redirect: false,
-      showMenuList: false,
-    }
-  }
+const Header = (props) => {
+  const anchorRef = React.useRef(null);
+  const [redirect, setRedirect] = useState(false)
+  const [redirectUrl, setRedirectUrl] = useState("/")
+  const [showMenuList, setShowMenuList] = useState(false)
 
-  logOut = () => {
+  const logOut = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
     };
     fetch("http://localhost:4000/dog/signout", requestOptions)
-    this.setState({
-      redirect: true
-    })
+    setRedirect(true)
   }
 
-  setShowMenuList = () => {
-    this.setState({
-      showMenuList: true
-    })
+  const viewMessages = () => {
+    setRedirectUrl("/viewMessages")
+    setRedirect(true)
   }
 
-  render() {
-    return (
-      <div>
-          <AppBar position="static" style={{backgroundColor: "#ebc344"}}>
-        <Toolbar>
-          <img className='size' src='https://1.bp.blogspot.com/-TS-FZ7WejCI/YLEcPS6SzjI/AAAAAAAAAjc/rz1avOEq6AglfyMk4TcBS3783GHPju1PQCLcBGAsYHQ/s320/puppylove.jpg'></img>
-          <div style={{marginLeft: '60rem'}}>
-            {this.props.isLoggedIn && 
-              <div>
-                <IconButton edge="end" style={{backgroundColor: "#ebc344"}} aria-label="menu">
-                  <MenuIcon onClick={this.showMenuList}/>
-                </IconButton>
-                {this.state.showMenuList && 
-                  <MenuList>
-                    <MenuItem>Profile</MenuItem>
-                    <MenuItem>My account</MenuItem>
-                    <MenuItem>Logout</MenuItem>
-                  </MenuList>}
-                <Button>Messages</Button>
-                <Button onClick={this.logOut}>Logout</Button>
-              </div>}
-            {!this.props.isLoggedIn && <Button href="/login">Sign In</Button>}
-            </div>
+  const editAccount = () => {
+    setRedirectUrl("/editAccount")
+    setRedirect(true)
+  }
+
+  const viewMap = () => {
+    setRedirectUrl("/findDogs")
+    setRedirect(true)
+  }
+
+  return (
+    <div style={{zIndex: "9998"}}>
+      <AppBar position="static" style={{backgroundColor: "#ebc344"}}>
+      <Toolbar>
+        <img className='size' src='https://1.bp.blogspot.com/-TS-FZ7WejCI/YLEcPS6SzjI/AAAAAAAAAjc/rz1avOEq6AglfyMk4TcBS3783GHPju1PQCLcBGAsYHQ/s320/puppylove.jpg'></img>
+        <div style={{marginLeft: '60rem'}}>
+          {props.isLoggedIn && 
             <div>
-              <PopupState variant="popover" popupId="demo-popup-menu">
-                {(popupState) => (
-                  <React.Fragment>
-                    <Button variant="contained" {...bindTrigger(popupState)}>
-                      <AccountCircleIcon/>
-                    </Button>
-              <Menu {...bindMenu(popupState)}>
-                <MenuItem onClick={popupState.close}>Profile</MenuItem>
-                <MenuItem onClick={popupState.close}>My account</MenuItem>
-                <MenuItem onClick={popupState.close}>Logout</MenuItem>
-              </Menu>
-            </React.Fragment>
+              <IconButton edge="end" style={{backgroundColor: "#ebc344"}} aria-label="menu" onClick={() => setShowMenuList(true)} ref={anchorRef}>
+                <MenuIcon />
+              </IconButton>
+              <Popper open={showMenuList} transition disablePortal anchorEl={anchorRef.current}>
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                  >
+                    <Paper>
+                      <ClickAwayListener onClickAway={() => setShowMenuList(false)}>
+                        <MenuList autoFocusItem={true} id="menu-list-grow">
+                          <MenuItem onClick={() => viewMessages()}>Messages</MenuItem>
+                          <MenuItem onClick={() => editAccount()}>My account</MenuItem>
+                          <MenuItem onClick={() => viewMap()}>View Map</MenuItem>
+                          <MenuItem onClick={() => logOut()}>Logout</MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
                 )}
-              </PopupState>
-            </div>
-        </Toolbar>
-      </AppBar>
-        {this.state.redirect && <Redirect to="/" />}
-      </div>
-    );
-  };
+              </Popper>
+          </div>}
+          {!props.isLoggedIn && <Button href="/login">Sign In</Button>}
+          </div>
+      </Toolbar>
+    </AppBar>
+      {redirect && <Redirect to={redirectUrl} />}
+    </div>
+  );
 };
 
 export default Header;

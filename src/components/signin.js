@@ -27,7 +27,7 @@ class SignIn extends Component {
               password_digest: this.state.password
             })
           };
-          fetch("http://localhost:4000/dog/login", requestOptions)
+          fetch("http://localhost:4000/login", requestOptions)
           .then((res) => res.json())
           .then((data) => {
             console.log(data)
@@ -96,7 +96,7 @@ class SignIn extends Component {
       {this.state.redirect && 
       <Redirect
             to={{
-            pathname: "/finddogs",
+            pathname: "/findDogs",
             state: { 
                     email: this.state.email,
                     dogName: this.state.dogName,
