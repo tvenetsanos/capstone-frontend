@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Link } from "react-router-dom";
 import Geocode from "react-geocode";
+import { Redirect } from "react-router-dom";
 
 const SignUp = () => {
   const [email, setEmail] = useState("")
@@ -22,8 +23,9 @@ const SignUp = () => {
   const [dogName, setDogName] = useState("")
   const [dogBreed, setDogBreed] = useState("")
   const [dogAge, setDogAge] = useState(0)
+  const [redirect, setRedirect] = useState(false)
 
-  Geocode.setApiKey("AIzaSyAR8pjtTek4GgQP5MiIkfPVhc5XXD2rqbk");
+  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
       const handleAddDog = (user_id) => {
         const requestOptions = {
@@ -38,13 +40,16 @@ const SignUp = () => {
             })
           };
           fetch("http://localhost:4000/dog", requestOptions)
+          .then(setRedirect(true))
       }
 
       const handleSignUp = () => {
+        console.log("you're in the signup")
         let address = `${addressOne} ${city}, ${state} ${zipCode}`
         Geocode.fromAddress(address).then(
         (response) => {
         const { lat, lng } = response.results[0].geometry.location;
+        console.log("hello")
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -183,19 +188,15 @@ const SignUp = () => {
               Cancel
             </Button>
           </Link>
-          <Link to={{
-                pathname: "/findDogs", 
-                state: { 
-                    email: email,
-                    name: name,
-                }
-            }}>
-            <Button onClick={handleSignUp} color="primary">
+            <Button onClick={() => handleSignUp()} color="primary">
                 Sign Up
             </Button>
-          </Link>
         </DialogActions>
       </Dialog>
+      {redirect && <Redirect to={{pathname: "/findDogs", state: { 
+                    email: email,
+                    name: name,
+                }}} />}
     </div>
   );
 }

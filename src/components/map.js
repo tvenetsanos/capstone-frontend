@@ -64,5 +64,5 @@ const MapContainer = (props) => {
 
  
 export default GoogleApiWrapper({
-  apiKey: ('AIzaSyAR8pjtTek4GgQP5MiIkfPVhc5XXD2rqbk')
+  apiKey: (process.env.REACT_APP_GOOGLE_API_KEY)
 })(MapContainer)
