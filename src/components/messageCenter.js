@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Button, FilledInput, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
+import "../css/messageCenter.css"
 
 const MessageCenter = (props) => {
   const [messages, setMessages] = useState([])
@@ -75,28 +76,12 @@ const MessageCenter = (props) => {
         if ("" + message.user_id !== "" + props.location.state.userFrom) {
           float = "left"
           color = "Grey"
-          return (<p key={index} style={{backgroundColor: color,
-                    padding:10,
-                    borderRadius: 5, 
-                    marginTop: 5,
-                    marginRight: "25%",
-                    maxWidth: '25%',
-                    alignSelf: 'flex-start',
-                    color: 'white',
-                    borderRadius: 20,}}>{message.message}</p>)
+          return (<p key={index} className="message" style={{backgroundColor: color, marginRight: "25%"}}>{message.message}</p>)
         }
         else {
           float = "right"
           color = "#0078fe"
-          return (<p key={index} style={{backgroundColor: color,
-                    padding:10,
-                    borderRadius: 5, 
-                    marginTop: 5,
-                    marginLeft: "25%",
-                    maxWidth: '25%',
-                    alignSelf: 'flex-start',
-                    color: 'white',
-                    borderRadius: 20,}}>{message.message}</p>)
+          return (<p key={index} className="message" style={{backgroundColor: color, marginLeft: "25%"}}>{message.message}</p>)
         }
       })
     }
@@ -108,13 +93,14 @@ const MessageCenter = (props) => {
   }
 
   return (
-        <div style={{paddingLeft: "20rem", paddingRight: "20rem", paddingBottom: "5rem", paddingTop: "5rem", width: "100%"}}>
+        <div className="messageCenter">
           {displayMessages()} 
           <FilledInput
             value={newMessage}
+            className="messageCenterSend"
             endAdornment={
               <InputAdornment position="end">
-                <Button style={{marginLeft: "33rem"}} variant="contained" color="primary" onClick={sendMessage}>Send</Button>
+                <Button className="messageCenterButton" variant="contained" color="primary" onClick={sendMessage}>Send</Button>
               </InputAdornment>
             }
             onChange={(event) => setNewMessage(event.target.value)}

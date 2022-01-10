@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import GoogleMapReact from 'google-map-react';
 import Map from "./map.js"
+import "../css/userHome.css"
 
 const UserHome = () => {
   const [lat, setLat] = useState(0)
@@ -53,7 +54,7 @@ const UserHome = () => {
   }
 
   return (
-    <div style={{ height: '50vh', width: '100%', zIndex: "-1", position: "relative"}}>
+    <div className="userHome">
         {renderMap && <Map usersDogs={usersDogs.users} lat={lat} lng={lng} redirect={redirectToMessageCenter} />}
         {userTo && <Redirect to={{pathname: "/message", state: {userTo: userTo.id, userFrom: userFrom.id}}} />}
     </div>

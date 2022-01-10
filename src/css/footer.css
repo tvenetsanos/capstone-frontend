@@ -1,0 +1,15 @@
+.footer {
+  bottom: unset !important;
+  z-index: -1;
+  position: relative !important;
+}
+
+.footerName {
+  color: '#ebc344';
+  text-align: center;
+  margin-top: -50px;
+}
+
+.footerLink {
+  margin-left: 10px;
+}

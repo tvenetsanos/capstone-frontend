@@ -1,0 +1,25 @@
+.messageCenter {
+  padding-left: 20rem; 
+  padding-right: 20rem; 
+  padding-bottom: 5rem;
+  padding-top: 5rem;
+  width: 100%;
+}
+
+.messageCenterSend {
+  width: 50%;
+}
+
+.messageCenterButton {
+  margin-left: 50rem;
+}
+
+.message {
+  padding: 0.5em;
+  border-radius: 5em; 
+  margin-top: 2em;
+  max-width: 25%;
+  align-self: flex-start;
+  color: white;
+  border-radius: 20em;
+}

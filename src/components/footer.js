@@ -7,13 +7,12 @@ import {
   FooterLink,
   Heading,
 } from './footerstyles';
+import '../css/footer.css'
 
 const Footer = () => {
   return (
-    <Box style={{bottom: "unset", zIndex: "-1", position: "relative"}}>
-      <h1 style={{color: '#ebc344',
-        textAlign: 'center',
-        marginTop: '-50px'}}>
+    <Box className="footer">
+      <h1 className="footerName">
         Puppy Love: A place to find Puppy Play Dates
       </h1>
       <Container>
@@ -41,28 +40,28 @@ const Footer = () => {
             <Heading>Social Media</Heading>
             <FooterLink href='#'>
               <i className='fab fa-facebook-f'>
-                <span style={{marginLeft: '10px'}}>
+                <span className="footerLink">
                 Facebook
                 </span>
               </i>
             </FooterLink>
             <FooterLink href='#'>
               <i className='fab fa-instagram'>
-                <span style={{marginLeft: '10px'}}>
+                <span className="footerLink">
                 Instagram
                 </span>
               </i>
             </FooterLink>
             <FooterLink href='#'>
               <i className='fab fa-twitter'>
-                <span style={{marginLeft: '10px'}}>
+                <span className="footerLink">
                 Twitter
                 </span>
               </i>
             </FooterLink>
             <FooterLink href='#'>
               <i className='fab fa-youtube'>
-                <span style={{marginLeft: '10px'}}>
+                <span className="footerLink">
                 Youtube
                 </span>
               </i>
