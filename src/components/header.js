@@ -1,5 +1,4 @@
-import React, {Component, useState} from 'react';
-import { Redirect } from "react-router-dom";
+import React, {Component, useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Link } from "react-router-dom";
+import { Link, useHistory} from "react-router-dom";
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 // import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
@@ -21,10 +20,9 @@ import "../css/header.css"
 
 const Header = (props) => {
   const anchorRef = React.useRef(null);
-  const [redirect, setRedirect] = useState(false)
-  const [redirectUrl, setRedirectUrl] = useState("/")
   const [showMenuList, setShowMenuList] = useState(false)
-
+  const history = useHistory();
+  
   const logOut = () => {
     const requestOptions = {
       method: 'POST',
@@ -32,22 +30,19 @@ const Header = (props) => {
       credentials: "include",
     };
     fetch("http://localhost:4000/logout", requestOptions)
-    setRedirect(true)
+    history.push("/")
   }
 
   const viewMessages = () => {
-    setRedirectUrl("/viewMessages")
-    setRedirect(true)
+    history.push("/viewMessages")
   }
 
   const editAccount = () => {
-    setRedirectUrl("/editAccount")
-    setRedirect(true)
+    history.push("/editAccount")
   }
 
   const viewMap = () => {
-    setRedirectUrl("/findDogs")
-    setRedirect(true)
+    history.push("/findDogs")
   }
 
   return (
@@ -85,7 +80,6 @@ const Header = (props) => {
           </div>
       </Toolbar>
     </AppBar>
-      {redirect && <Redirect to={redirectUrl} />}
     </div>
   );
 };

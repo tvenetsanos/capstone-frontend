@@ -27,14 +27,14 @@ class App extends Component {
                             <PrivateRoute component={UserHome}
                                 path="/findDogs" exact>
                             </PrivateRoute>
-                            <PrivateRoute component={MessageCenter}
-                                path="/message" exact>
-                            </PrivateRoute>
                             <PrivateRoute component={EditAccount}
                                 path="/editAccount" exact>
                             </PrivateRoute>
                             <PrivateRoute component={ViewMessages}
                                 path="/viewMessages" exact>
+                            </PrivateRoute>
+                            <PrivateRoute component={MessageCenter}
+                                path="/message" exact>
                             </PrivateRoute>
                             <Route path="/signup" exact>
                                 <SignUp />

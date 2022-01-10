@@ -21,7 +21,7 @@ class Main extends Component {
     return (
       <div>
         <Header isLoggedIn={false} />
-        <img className='home-image' src='https://i.ytimg.com/vi/FHytoCvj90w/maxresdefault.jpg' style={{width: '100%', height: '45rem'}}></img>
+          <img className='home-image' src='https://i.ytimg.com/vi/FHytoCvj90w/maxresdefault.jpg' style={{width: '100%', height: '45rem'}}></img>
         <Footer />
       </div>
     );

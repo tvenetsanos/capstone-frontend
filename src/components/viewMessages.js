@@ -4,6 +4,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { Redirect } from "react-router-dom";
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const ViewMessages = (props) => {
   const [conversations, setConversations] = useState([])
@@ -13,10 +17,10 @@ const ViewMessages = (props) => {
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
-    getMessages()
+    getConversations()
   }, [])
 
-  const getMessages = () => {
+  const getConversations = () => {
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -34,6 +38,15 @@ const ViewMessages = (props) => {
     setUserTo(userTo)
     setUserFrom(userFrom)
     setRedirect(true)
+  }
+
+  const deleteConversation = (conversation_id) => {
+    const requestOptions = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: "include",
+    };
+    fetch(`http://localhost:4000/conversation/${conversation_id}`, requestOptions)
   }
 
   const showMessages = () => {
@@ -58,6 +71,11 @@ const ViewMessages = (props) => {
         <div>
           <ListItem onClick={() => redirectToMessages(userTo, userFrom)} button>
             <ListItemText primary={user} secondary={message} />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="delete" onClick={() => deleteConversation(conversation.conversation.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
           </ListItem>
           <Divider />
         </div>

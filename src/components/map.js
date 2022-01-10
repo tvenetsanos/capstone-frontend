@@ -29,6 +29,8 @@ const MapContainer = (props) => {
         const infoBody = (<div style={{margin: '0 auto'}}>
         <img style={{maxHeight: '10rem', maxWidth: '10rem'}} className='size' src={data.message}></img>
         <h1>{userDog && userDog.dog.dog_name}</h1>
+        <h3>Breed: {userDog.dog.breed}</h3>
+        <h3>Age: {userDog.dog.age}</h3>
         <h3>{userDog.user.address_one}</h3>
         <h3>{userDog.user.address_two}</h3>
         <h3>{userDog.user.city} {userDog.user.zip_code}</h3>

@@ -1,7 +1,7 @@
 import React, {Component, useState, useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 const EditAccount = (props) => {
   const [redirect, setRedirect] = useState(false)
@@ -15,6 +15,7 @@ const EditAccount = (props) => {
   const [dogName, setDogName] = useState("")
   const [dogBreed, setDogBreed] = useState("")
   const [dogAge, setDogAge] = useState(0)
+  const history = useHistory()
 
   useEffect(() => {
     const requestOptions = {
@@ -83,6 +84,16 @@ const EditAccount = (props) => {
     submitEditUser()
     submitEditDog()
     setRedirect(true)
+  }
+
+  const handleDeleteUserAndDog = () => {
+    const requestOptions = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: "include"
+    };
+    fetch(`http://localhost:4000/user`, requestOptions)
+    history.push("/")
   }
 
   return (
@@ -179,7 +190,8 @@ const EditAccount = (props) => {
             onChange={(event) => setDogAge(event.target.value)}
             fullWidth
           />
-          <Button onClick={() => { handleUpdateUserAndDog()}}>Submit</Button>
+          <Button onClick={() => { handleUpdateUserAndDog()}} color="primary" variant="contained">Submit</Button>
+          <Button onClick={() => { handleDeleteUserAndDog()}} color="secondary" variant="contained">Delete Account</Button>
           {redirect && <Redirect to="/findDogs" />}
     </div>
   )

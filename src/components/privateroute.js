@@ -38,8 +38,8 @@ const PrivateRoute = ({component: Component, ...rest}) => {
             // Otherwise, redirect the user to /signin page
             <Route {...rest} render={props => (
                 <div>
-                    <Header isLoggedIn={true} />
-                    <Component {...props} />
+                    <Header isLoggedIn={true} redirect={false} />
+                      <Component {...props} />
                     <Footer />
                 </div>
             )} />
