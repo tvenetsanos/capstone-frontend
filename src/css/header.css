@@ -1,0 +1,8 @@
+.menu {
+  z-index: 9998;
+  margin-left: 60rem;
+}
+
+.headerColor {
+  background-color: #ebc344 !important;
+}

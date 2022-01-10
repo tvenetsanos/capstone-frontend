@@ -12,10 +12,6 @@ const MessageCenter = (props) => {
     getConversation()
   }, [updateMessages])
 
-  useEffect(() => {
-    getConversation()
-  }, [])
-
   const getConversation = () => {
     const requestOptions = {
       method: 'POST',

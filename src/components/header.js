@@ -17,6 +17,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
+import "../css/header.css"
 
 const Header = (props) => {
   const anchorRef = React.useRef(null);
@@ -50,14 +51,14 @@ const Header = (props) => {
   }
 
   return (
-    <div style={{zIndex: "9998"}}>
-      <AppBar position="static" style={{backgroundColor: "#ebc344"}}>
+    <div>
+      <AppBar position="static" className="headerColor">
       <Toolbar>
         <img className='size' src='https://1.bp.blogspot.com/-TS-FZ7WejCI/YLEcPS6SzjI/AAAAAAAAAjc/rz1avOEq6AglfyMk4TcBS3783GHPju1PQCLcBGAsYHQ/s320/puppylove.jpg'></img>
-        <div style={{marginLeft: '60rem'}}>
+        <div className="menu">
           {props.isLoggedIn && 
             <div>
-              <IconButton edge="end" style={{backgroundColor: "#ebc344"}} aria-label="menu" onClick={() => setShowMenuList(true)} ref={anchorRef}>
+              <IconButton edge="end" className="headerColor" aria-label="menu" onClick={() => setShowMenuList(true)} ref={anchorRef}>
                 <MenuIcon />
               </IconButton>
               <Popper open={showMenuList} transition disablePortal anchorEl={anchorRef.current}>
