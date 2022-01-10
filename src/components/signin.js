@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -7,52 +7,29 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Redirect, Link } from "react-router-dom";
 import { TextField, Button, Input, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 
-class SignIn extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            email: "",
-            password: "",
-            redirect: false
-        }
-    }
+const SignIn = () => {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [redirect, setRedirect] = useState(false)
 
-      handleSignIn = () => {
+      const handleSignIn = () => {
           const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: "include",
             body: JSON.stringify({ 
-              email: this.state.email,
-              password_digest: this.state.password
+              email: email,
+              password_digest: password
             })
           };
           fetch("http://localhost:4000/login", requestOptions)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data)
-            this.setState({
-              redirect: true
-            })
+            setRedirect(true)
         })
       }
 
-      handlePasswordChange = (event) => {
-        this.setState({
-            password: event.target.value
-        })
-    }
-      handleEmailChange = (event) => {
-        this.setState({
-            email: event.target.value
-        })
-    }
-
-  componentDidMount() {
-  }
-
-  render() {
-    return (
+  return (
      <div className="sign-up-button">
       <Dialog open={true} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
@@ -66,7 +43,7 @@ class SignIn extends Component {
             id="name"
             label="Email Address"
             type="email"
-            onBlur={this.handleEmailChange}
+            onBlur={(event) => setEmail(event.target.value)}
             fullWidth
           />
           <TextField
@@ -75,7 +52,7 @@ class SignIn extends Component {
             id="name"
             label="Password"
             type='password'
-            onBlur={this.handlePasswordChange}
+            onBlur={(event) => setPassword(event.target.value)}
             fullWidth
           />
         </DialogContent>
@@ -88,48 +65,22 @@ class SignIn extends Component {
               Cancel
             </Button>
           </Link>
-          <Button onClick={this.handleSignIn} color="primary">
+          <Button onClick={handleSignIn} color="primary">
                 Log in
           </Button>
         </DialogActions>
       </Dialog>
-      {this.state.redirect && 
+      {redirect && 
       <Redirect
             to={{
             pathname: "/findDogs",
             state: { 
-                    email: this.state.email,
-                    dogName: this.state.dogName,
-                    addressOne: this.state.addressOne,
-                    addressTwo: this.state.addressTwo,
-                    city: this.state.city,
-                    state: this.state.state,
-                    zipCode: this.state.zipCode
+                    email: email
                 }
           }}
         />}
     </div>
     );
-  }
 }
 
-{/* <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-          <Input
-            id="standard-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={handleChange('password')}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {values.showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </IconButton>
-              </InputAdornment>
-            }
-          /> */}
- 
 export default SignIn;

@@ -25,7 +25,7 @@ class App extends Component {
                     <div>
                         <Switch>
                             <PrivateRoute component={UserHome}
-                                path="/findDogs">
+                                path="/findDogs" exact>
                             </PrivateRoute>
                             <PrivateRoute component={MessageCenter}
                                 path="/message" exact>

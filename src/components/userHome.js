@@ -1,26 +1,24 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import GoogleMapReact from 'google-map-react';
 import Map from "./map.js"
 
-class UserHome extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      lat: 0,
-      lng: 0,
-      renderMap: false,
-      userTo: null,
-      userFrom: null,
-      usersDogs: []
-    }
-    this.getUsers()
-    this.getInitialCenter()
-  }
+const UserHome = () => {
+  const [lat, setLat] = useState(0)
+  const [lng, setLng] = useState(0)
+  const [renderMap, setRenderMap] = useState(false)
+  const [userTo, setUserTo] = useState(null)
+  const [userFrom, setUserFrom] = useState(null)
+  const [usersDogs, setUsersDogs] = useState([])
 
-  getInitialCenter = async () => {
+  useEffect(() => {
+    getUsers()
+    getInitialCenter()
+  }, [])
+
+  const getInitialCenter = async () => {
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -29,15 +27,13 @@ class UserHome extends Component {
     await fetch("http://localhost:4000/user", requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        this.setState({
-          userFrom: data.user,
-          lat: data.user.lat,
-          lng: data.user.lng
-        })
+        setUserFrom(data.user)
+        setLat(data.user.lat)
+        setLng(data.user.lng)
       })
   }
 
-  getUsers = () => {
+  const getUsers = () => {
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -46,30 +42,22 @@ class UserHome extends Component {
     fetch("http://localhost:4000/users", requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        this.setState({
-          usersDogs: data,
-          renderMap: true
-        })
+        setUsersDogs(data)
+        setRenderMap(true)
       })
   }
 
-  redirectToMessageCenter = (userTo) => {
-    console.log(userTo)
-    this.setState({
-      userTo: userTo,
-      renderMap: false
-    })
+  const redirectToMessageCenter = (userTo) => {
+    setUserTo(userTo)
+    setRenderMap(false)
   }
 
-  render() {
-    return (
-        <div style={{ height: '50vh', width: '100%', zIndex: "-1", position: "relative"}}>
-            {this.state.renderMap && <Map usersDogs={this.state.usersDogs.users} lat={this.state.lat} lng={this.state.lng} redirect={this.redirectToMessageCenter} />}
-            {this.state.userTo && <Redirect to={{pathname: "/message", state: {userTo: this.state.userTo.id, userFrom: this.state.userFrom.id}}} />}
-        </div>
-    );
-  };
+  return (
+    <div style={{ height: '50vh', width: '100%', zIndex: "-1", position: "relative"}}>
+        {renderMap && <Map usersDogs={usersDogs.users} lat={lat} lng={lng} redirect={redirectToMessageCenter} />}
+        {userTo && <Redirect to={{pathname: "/message", state: {userTo: userTo.id, userFrom: userFrom.id}}} />}
+    </div>
+  );
 }
  
 export default UserHome;

@@ -9,56 +9,39 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Link } from "react-router-dom";
 import Geocode from "react-geocode";
 
-class SignUp extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            open: false,
-            email: "",
-            addressOne: "",
-            addressTwo: "",
-            zipCode: "",
-            state: "",
-            city: "",
-            name: "",
-            password: "",
-            userDetailId: 0,
-            dogName: "",
-            dogBreed: "",
-            dogAge: 0
-        }
-        Geocode.setApiKey("AIzaSyAR8pjtTek4GgQP5MiIkfPVhc5XXD2rqbk");
-    }
+const SignUp = () => {
+  const [email, setEmail] = useState("")
+  const [addressOne, setAddressOne] = useState("")
+  const [addressTwo, setAddressTwo] = useState("")
+  const [zipCode, setZipCode] = useState("")
+  const [state, setState] = useState("")
+  const [city, setCity] = useState("")
+  const [name, setName] = useState("")
+  const [password, setPassword] = useState("")
+  const [userDetailId, setUserDetailId] = useState(0)
+  const [dogName, setDogName] = useState("")
+  const [dogBreed, setDogBreed] = useState("")
+  const [dogAge, setDogAge] = useState(0)
 
-    handleClickOpen = () => {
-        this.setState({
-            open: true,
-        })
-      };
+  Geocode.setApiKey("AIzaSyAR8pjtTek4GgQP5MiIkfPVhc5XXD2rqbk");
 
-      handleClose = () => {
-        this.setState({
-            open: false,
-        })
-      };
-
-      handleAddDog = (user_id) => {
+      const handleAddDog = (user_id) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: "include",
             body: JSON.stringify({ 
-              name: this.state.dogName,
-              breed: this.state.dogBreed,
-              age: this.state.dogAge,
+              name: dogName,
+              breed: dogBreed,
+              age: dogAge,
               user_id: user_id
             })
           };
           fetch("http://localhost:4000/dog", requestOptions)
       }
 
-      handleSignUp = () => {
-        let address = `${this.state.addressOne} ${this.state.city}, ${this.state.state} ${this.state.zipCode}`
+      const handleSignUp = () => {
+        let address = `${addressOne} ${city}, ${state} ${zipCode}`
         Geocode.fromAddress(address).then(
         (response) => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -67,14 +50,14 @@ class SignUp extends Component {
             headers: { 'Content-Type': 'application/json' },
             credentials: "include",
             body: JSON.stringify({ 
-              email: this.state.email,
-              password_digest: this.state.password,
-              name: this.state.name, 
-              address_one: this.state.addressOne,
-              address_two: this.state.addressTwo,
-              city: this.state.city,
-              state: this.state.state,
-              zip_code: this.state.zipCode,
+              email: email,
+              password_digest: password,
+              name: name, 
+              address_one: addressOne,
+              address_two: addressTwo,
+              city: city,
+              state: state,
+              zip_code: zipCode,
               lat: lat,
               lng: lng
             })
@@ -82,86 +65,18 @@ class SignUp extends Component {
           fetch("http://localhost:4000/signup", requestOptions)
           .then(res => res.json())
           .then((data) => {
-            this.handleAddDog(data.id)
+            handleAddDog(data.id)
           })
       },
       (error) => {
         console.error(error);
       }
-    );
-          this.handleClose()
-          
-      }
-
-      handleEmailChange = (event) => {
-          this.setState({
-              email: event.target.value
-          })
-      }
-
-      handleNameChange = (event) => {
-        this.setState({
-            dogName: event.target.value
-        })
-    }
-    
-    handlePasswordChange = (event) => {
-        this.setState({
-            password: event.target.value
-        })
-    }
-
-    handleAddressOneChange = (event) => {
-        this.setState({
-            addressOne: event.target.value
-        })
-    }
-    handleAddressTwoChange = (event) => {
-        this.setState({
-            addressTwo: event.target.value
-        })
-    }
-    handleZipCodeChange = (event) => {
-        this.setState({
-            zipCode: event.target.value
-        })
-    }
-    handleStateChange = (event) => {
-        this.setState({
-            state: event.target.value
-        })
-    }
-    handleCityChange = (event) => {
-        this.setState({
-            city: event.target.value
-        })
-    }
-
-    handleDogNameChange = (event) => {
-      this.setState({
-        dogName: event.target.value
-      })
-    }
-
-    handleDogBreedChange = (event) => {
-      this.setState({
-        dogBreed: event.target.value
-      })
-    }
-
-    handleDogAgeChange = (event) => {
-      this.setState({
-        dogAge: event.target.value
-      })
-    }
-
-  componentDidMount() {
+    );    
   }
 
-  render() {
-    return (
+  return (
      <div className="sign-up-button">
-      <Dialog open={true} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={true} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -174,7 +89,7 @@ class SignUp extends Component {
             id="emailAddress"
             label="Email Address"
             type="email"
-            onBlur={this.handleEmailChange}
+            onBlur={(event) => setEmail(event.target.value)}
             fullWidth
           />
           <TextField
@@ -182,7 +97,7 @@ class SignUp extends Component {
             margin="dense"
             id="password"
             label="Password"
-            onBlur={this.handlePasswordChange}
+            onBlur={(event) => setPassword(event.target.value)}
             fullWidth
           />
           <TextField
@@ -190,7 +105,7 @@ class SignUp extends Component {
             margin="dense"
             id="name"
             label="Name"
-            onBlur={this.handleNameChange}
+            onBlur={(event) => setName(event.target.value)}
             fullWidth
           />
           <TextField
@@ -198,7 +113,7 @@ class SignUp extends Component {
             margin="dense"
             id="addressOne"
             label="Address One"
-            onBlur={this.handleAddressOneChange}
+            onBlur={(event) => setAddressOne(event.target.value)}
             fullWidth
           />
           <TextField
@@ -206,7 +121,7 @@ class SignUp extends Component {
             margin="dense"
             id="addressTwo"
             label="Address Two"
-            onBlur={this.handleAddressTwoChange}
+            onBlur={(event) => setAddressTwo(event.target.value)}
             fullWidth
           />
           <TextField
@@ -214,7 +129,7 @@ class SignUp extends Component {
             margin="dense"
             id="city"
             label="City"
-            onBlur={this.handleCityChange}
+            onBlur={(event) => setCity(event.target.value)}
             fullWidth
           />
           <TextField
@@ -222,7 +137,7 @@ class SignUp extends Component {
             margin="dense"
             id="state"
             label="State"
-            onBlur={this.handleStateChange}
+            onBlur={(event) => setState(event.target.value)}
             fullWidth
           />
           <TextField
@@ -230,7 +145,7 @@ class SignUp extends Component {
             margin="dense"
             id="zipCodes"
             label="Zip Code"
-            onBlur={this.handleZipCodeChange}
+            onBlur={(event) => setZipCode(event.target.value)}
             fullWidth
           />
           <h2>Dog Details</h2>
@@ -239,7 +154,7 @@ class SignUp extends Component {
             margin="dense"
             id="dogName"
             label="Name"
-            onBlur={this.handleDogNameChange}
+            onBlur={(event) => setDogName(event.target.value)}
             fullWidth
           />
           <TextField
@@ -247,7 +162,7 @@ class SignUp extends Component {
             margin="dense"
             id="dogBreed"
             label="Breed"
-            onBlur={this.handleDogBreedChange}
+            onBlur={(event) => setDogBreed(event.target.value)}
             fullWidth
           />
           <TextField
@@ -255,7 +170,7 @@ class SignUp extends Component {
             margin="dense"
             id="age"
             label="Age"
-            onBlur={this.handleDogAgeChange}
+            onBlur={(event) => setDogAge(event.target.value)}
             fullWidth
           />
         </DialogContent>
@@ -271,19 +186,18 @@ class SignUp extends Component {
           <Link to={{
                 pathname: "/findDogs", 
                 state: { 
-                    email: this.state.email,
-                    name: this.state.name,
+                    email: email,
+                    name: name,
                 }
             }}>
-            <Button onClick={this.handleSignUp} color="primary">
+            <Button onClick={handleSignUp} color="primary">
                 Sign Up
             </Button>
           </Link>
         </DialogActions>
       </Dialog>
     </div>
-    );
-  }
+  );
 }
 
 export default SignUp;

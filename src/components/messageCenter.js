@@ -1,50 +1,39 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, FilledInput, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 
-class MessageCenter extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      messages: [],
-      newMessage: "",
-      updateMessages: false,
-      conversation: null
-    }
-  }
+const MessageCenter = (props) => {
+  const [messages, setMessages] = useState([])
+  const [newMessage, setNewMessage] = useState("")
+  const [updateMessages, setUpdateMessages] = useState(false)
+  const [conversation, setConversation] = useState(null)
 
-  componentDidUpdate() {
-    if (this.state.updateMessages) {
-      this.getConversation()
-    }
-  }
+  useEffect(() => {
+    getConversation()
+  }, [updateMessages])
 
-  componentDidMount() {
-    this.getConversation()
-  }
+  useEffect(() => {
+    getConversation()
+  }, [])
 
-  getConversation = () => {
-    console.log(this.props.location.state.userTo)
-    console.log(this.props.location.state.userFrom)
+  const getConversation = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
       body: JSON.stringify({ 
-        first_user_id: this.props.location.state.userTo,
-        second_user_id: this.props.location.state.userFrom
+        first_user_id: props.location.state.userTo,
+        second_user_id: props.location.state.userFrom
       })
     };
     fetch(`http://localhost:4000/conversation`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        this.setState({
-          conversation: data.conversation
-        })
-        this.getMessages(data.conversation.id)
+        setConversation(data.conversation)
+        getMessages(data.conversation.id)
       })
     }
 
-  getMessages = (conversation_id) => {
+  const getMessages = (conversation_id) => {
     console.log(conversation_id)
     const requestOptions = {
       method: 'GET',
@@ -54,50 +43,36 @@ class MessageCenter extends Component {
     fetch(`http://localhost:4000/conversation/${conversation_id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        this.setState({
-          messages: data.messages,
-          updateMessages: false
-        })
+        setMessages(data.messages)
+        setUpdateMessages(false)
       })
   }
 
-  sendMessage = () => {
+  const sendMessage = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
       body: JSON.stringify({ 
-        user_id: this.props.location.state.userFrom,
-        conversation_id: this.state.conversation.id,
-        message: this.state.newMessage
+        user_id: props.location.state.userFrom,
+        conversation_id: conversation.id,
+        message: newMessage
       })
     };
     fetch("http://localhost:4000/message", requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        this.setState({
-          newMessage: "",
-          updateMessages: true
-        })
+        setNewMessage("")
+        setUpdateMessages(true)
       })
   }
 
-  handleNewMessageChange = (event) => {
-    this.setState({
-      newMessage: event.target.value
-    })
-  }
-
-  displayMessages = () => {
-    if (this.state.messages) {
-      return this.state.messages.map((message, index) => {
+  const displayMessages = () => {
+    if (messages) {
+      return messages.map((message, index) => {
         let float;
         let color;
-        console.log(message.user_id)
-        console.log(this.props.location.state.userFrom)
-        if ("" + message.user_id !== "" + this.props.location.state.userFrom) {
+        if ("" + message.user_id !== "" + props.location.state.userFrom) {
           float = "left"
           color = "Grey"
           return (<p key={index} style={{backgroundColor: color,
@@ -132,23 +107,20 @@ class MessageCenter extends Component {
     }
   }
 
-  render() {
-    return (
+  return (
         <div style={{paddingLeft: "20rem", paddingRight: "20rem", paddingBottom: "5rem", paddingTop: "5rem", width: "100%"}}>
-          {this.displayMessages()} 
+          {displayMessages()} 
           <FilledInput
-            style={{}}
-            value={this.state.newMessage}
+            value={newMessage}
             endAdornment={
               <InputAdornment position="end">
-                <Button style={{marginLeft: "33rem"}} variant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
+                <Button style={{marginLeft: "33rem"}} variant="contained" color="primary" onClick={sendMessage}>Send</Button>
               </InputAdornment>
             }
-            onChange={this.handleNewMessageChange}
+            onChange={(event) => setNewMessage(event.target.value)}
           /> 
         </div>
     );
-  };
 }
  
 export default MessageCenter;

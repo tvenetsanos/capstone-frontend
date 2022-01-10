@@ -30,7 +30,7 @@ const Header = (props) => {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
     };
-    fetch("http://localhost:4000/dog/signout", requestOptions)
+    fetch("http://localhost:4000/logout", requestOptions)
     setRedirect(true)
   }
 
