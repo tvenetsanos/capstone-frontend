@@ -11,7 +11,7 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
-      dog: null
+      userDog: null
     };
   }
 
@@ -20,7 +20,7 @@ export class MapContainer extends Component {
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
-      dog: marker.dog
+      userDog: marker.userDog
     });
   }
 
@@ -38,20 +38,24 @@ export class MapContainer extends Component {
       .then((data) => {
         const infoBody = (<div style={{margin: '0 auto'}}>
         <img style={{maxHeight: '10rem', maxWidth: '10rem'}} className='size' src={data.message}></img>
-        <h1>{this.state.dog && this.state.dog.dog_name}</h1>
-        <h3>{this.state.dog.address_one}</h3>
-        <h3>{this.state.dog.address_two}</h3>
-        <h3>{this.state.dog.city} {this.state.dog.zip_code}</h3>
-        <Link onClick={() => {this.props.redirect(this.state.dog.id)}}>message</Link>
+        <h1>{this.state.userDog && this.state.userDog.dog.dog_name}</h1>
+        <h3>{this.state.userDog.user.address_one}</h3>
+        <h3>{this.state.userDog.user.address_two}</h3>
+        <h3>{this.state.userDog.user.city} {this.state.userDog.user.zip_code}</h3>
+        <br />
+        <h2>User Details</h2>
+        <h3>{this.state.userDog.user.name} • {this.state.userDog.user.email}</h3>
+        <Link onClick={() => {this.props.redirect(this.state.userDog.user)}}>message</Link>
         </div>);
         ReactDOM.render(infoBody, document.getElementById("info-window"));
       })
   }
 
   buildMarkers = () => {
-    return this.props.dogs.map((dog, index) => {
+    console.log(this.props.usersDogs)
+    return this.props.usersDogs.map((userDog, index) => {
         return (
-          <Marker name={dog.dog_name} onClick={this.onMarkerClick} key={index} dog={dog} position={{lat: dog.lat, lng: dog.lng}}/>
+          <Marker name={userDog.user.name} onClick={this.onMarkerClick} key={index} userDog={userDog} position={{lat: userDog.user.lat, lng: userDog.user.lng}}/>
         )
     })
   }

@@ -13,30 +13,53 @@ class MessageCenter extends Component {
 
   componentDidUpdate() {
     if (this.state.updateMessages) {
-      this.getMessages()
+      this.getConversation()
     }
   }
 
   componentDidMount() {
-    this.getMessages()
+    this.getConversation()
+    console.log(this.props.location.state.userTo)
+    console.log(this.props.location.state.userFrom)
   }
 
-  getMessages = () => {
+  getConversation = () => {
+    console.log(this.props.location.userTo)
+    console.log(this.props.location.state.userFrom)
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: "include",
+      body: JSON.stringify({ 
+        first_user_id: this.props.location.state.userTo.id,
+        second_user_id: this.props.location.state.userFrom.id
+      })
+    };
+    fetch(`http://localhost:4000/conversation`, requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        this.getMessages(data.conversation.id)
+      })
+    }
+
+  getMessages = (conversation_id) => {
+    console.log(conversation_id)
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: "include"
     };
-    fetch(`http://localhost:4000/messages?dogTo=${this.props.location.state.dogTo}`, requestOptions)
+    fetch(`http://localhost:4000/conversation/${conversation_id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.messages)
+        console.log(data)
         this.setState({
           messages: data.messages,
           updateMessages: false
         })
       })
-    }
+  }
 
   sendMessage = () => {
     const requestOptions = {
@@ -44,7 +67,7 @@ class MessageCenter extends Component {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
       body: JSON.stringify({ 
-        dog_to: this.props.location.state.dogTo,
+        dog_to: this.props.location.state.userTo,
         message: this.state.newMessage
       })
     };
@@ -70,8 +93,7 @@ class MessageCenter extends Component {
       return this.state.messages.map((message, index) => {
         let float;
         let color;
-        let margin
-        if (message.dog_to !== this.props.location.state.dogTo) {
+        if ("" + message.user_id !== "" + this.props.location.state.userFrom.id) {
           float = "left"
           color = "Grey"
           return (<p key={index} style={{backgroundColor: color,

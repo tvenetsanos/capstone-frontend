@@ -5,17 +5,18 @@ import TextField from '@material-ui/core/TextField';
 import GoogleMapReact from 'google-map-react';
 import Map from "./map.js"
 
-class DogHome extends Component {
+class UserHome extends Component {
   constructor(props) {
     super(props)
     this.state = {
       lat: 0,
       lng: 0,
       renderMap: false,
-      dogTo: null,
-      dogs: []
+      userTo: null,
+      userFrom: null,
+      usersDogs: []
     }
-    this.getDogs()
+    this.getUsers()
     this.getInitialCenter()
   }
 
@@ -25,35 +26,38 @@ class DogHome extends Component {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
     };
-    await fetch("http://localhost:4000/dog/details", requestOptions)
+    await fetch("http://localhost:4000/user", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         this.setState({
-          lat: data.dog.lat,
-          lng: data.dog.lng
+          userFrom: data.user,
+          lat: data.user.lat,
+          lng: data.user.lng
         })
       })
   }
 
-  getDogs = () => {
+  getUsers = () => {
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     };
-    fetch("http://localhost:4000/dogs", requestOptions)
+    fetch("http://localhost:4000/users", requestOptions)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         this.setState({
-          dogs: data,
+          usersDogs: data,
           renderMap: true
         })
       })
   }
 
-  redirectToMessageCenter = (dogTo) => {
+  redirectToMessageCenter = (userTo) => {
+    console.log(userTo)
     this.setState({
-      dogTo: dogTo,
+      userTo: userTo,
       renderMap: false
     })
   }
@@ -61,11 +65,11 @@ class DogHome extends Component {
   render() {
     return (
         <div style={{ height: '50vh', width: '50%' }}>
-            {this.state.renderMap && <Map dogs={this.state.dogs.dogs} lat={this.state.lat} lng={this.state.lng} redirect={this.redirectToMessageCenter} />}
-            {this.state.dogTo && <Redirect to={{pathname: "/message", state: {dogTo: this.state.dogTo}}} />}
+            {this.state.renderMap && <Map usersDogs={this.state.usersDogs.users} lat={this.state.lat} lng={this.state.lng} redirect={this.redirectToMessageCenter} />}
+            {this.state.userTo && <Redirect to={{pathname: "/message", state: {userTo: this.state.userTo, userFrom: this.state.userFrom}}} />}
         </div>
     );
   };
 }
  
-export default DogHome;
+export default UserHome;

@@ -17,7 +17,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
           }
-          await fetch("http://localhost:4000/dog/details", requestOptions)
+          await fetch("http://localhost:4000/session", requestOptions)
           .then((resp) => {
               if (resp.ok) {
                 console.log("logged in")

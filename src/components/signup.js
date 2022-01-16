@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -20,9 +20,12 @@ class SignUp extends Component {
             zipCode: "",
             state: "",
             city: "",
-            dogName: "",
+            name: "",
             password: "",
-            userDetailId: 0
+            userDetailId: 0,
+            dogName: "",
+            dogBreed: "",
+            dogAge: 0
         }
         Geocode.setApiKey("AIzaSyAR8pjtTek4GgQP5MiIkfPVhc5XXD2rqbk");
     }
@@ -39,6 +42,21 @@ class SignUp extends Component {
         })
       };
 
+      handleAddDog = (user_id) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: "include",
+            body: JSON.stringify({ 
+              name: this.state.dogName,
+              breed: this.state.dogBreed,
+              age: this.state.dogAge,
+              user_id: user_id
+            })
+          };
+          fetch("http://localhost:4000/dog", requestOptions)
+      }
+
       handleSignUp = () => {
         let address = `${this.state.addressOne} ${this.state.city}, ${this.state.state} ${this.state.zipCode}`
         Geocode.fromAddress(address).then(
@@ -51,7 +69,7 @@ class SignUp extends Component {
             body: JSON.stringify({ 
               email: this.state.email,
               password_digest: this.state.password,
-              dog_name: this.state.dogName, 
+              name: this.state.name, 
               address_one: this.state.addressOne,
               address_two: this.state.addressTwo,
               city: this.state.city,
@@ -61,7 +79,11 @@ class SignUp extends Component {
               lng: lng
             })
           };
-          fetch("http://localhost:4000/dog/signup", requestOptions)
+          fetch("http://localhost:4000/signup", requestOptions)
+          .then(res => res.json())
+          .then((data) => {
+            this.handleAddDog(data.id)
+          })
       },
       (error) => {
         console.error(error);
@@ -77,7 +99,7 @@ class SignUp extends Component {
           })
       }
 
-      handleDogNameChange = (event) => {
+      handleNameChange = (event) => {
         this.setState({
             dogName: event.target.value
         })
@@ -115,6 +137,24 @@ class SignUp extends Component {
         })
     }
 
+    handleDogNameChange = (event) => {
+      this.setState({
+        dogName: event.target.value
+      })
+    }
+
+    handleDogBreedChange = (event) => {
+      this.setState({
+        dogBreed: event.target.value
+      })
+    }
+
+    handleDogAgeChange = (event) => {
+      this.setState({
+        dogAge: event.target.value
+      })
+    }
+
   componentDidMount() {
   }
 
@@ -149,8 +189,8 @@ class SignUp extends Component {
             autoFocus
             margin="dense"
             id="name"
-            label="Dog Name"
-            onBlur={this.handleDogNameChange}
+            label="Name"
+            onBlur={this.handleNameChange}
             fullWidth
           />
           <TextField
@@ -193,6 +233,31 @@ class SignUp extends Component {
             onBlur={this.handleZipCodeChange}
             fullWidth
           />
+          <h2>Dog Details</h2>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="dogName"
+            label="Name"
+            onBlur={this.handleDogNameChange}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="dogBreed"
+            label="Breed"
+            onBlur={this.handleDogBreedChange}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="age"
+            label="Age"
+            onBlur={this.handleDogAgeChange}
+            fullWidth
+          />
         </DialogContent>
         <DialogActions>
           <a href="/login">Already have an account?</a>
@@ -207,7 +272,7 @@ class SignUp extends Component {
                 pathname: "/finddogs", 
                 state: { 
                     email: this.state.email,
-                    dogName: this.state.dogName,
+                    name: this.state.name,
                 }
             }}>
             <Button onClick={this.handleSignUp} color="primary">
