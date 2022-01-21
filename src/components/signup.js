@@ -25,6 +25,7 @@ const SignUp = () => {
   const [dogAge, setDogAge] = useState(0)
   const [redirect, setRedirect] = useState(false)
 
+  console.log(process.env.REACT_APP_GOOGLE_API_KEY)
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
       const handleAddDog = (user_id) => {

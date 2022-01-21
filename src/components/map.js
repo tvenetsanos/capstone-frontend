@@ -17,9 +17,9 @@ const MapContainer = (props) => {
   }
 
   const closeInfoWindow = () => {
+    setShowingInfoWindow(false)
     setSelectedPlace({})
     setActiveMarker({})
-    setShowingInfoWindow(false)
   }
 
   const renderInfoWindowButton = () => {

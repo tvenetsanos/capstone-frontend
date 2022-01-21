@@ -9,18 +9,18 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
-const ViewMessages = (props) => {
+const ViewMessages = () => {
   const [conversations, setConversations] = useState([])
   const [userTo, setUserTo] = useState(null)
   const [userFrom, setUserFrom] = useState(null)
   const [redirect, setRedirect] = useState(false)
-  const [messages, setMessages] = useState([])
 
   useEffect(() => {
     getConversations()
   }, [])
 
   const getConversations = () => {
+    console.log("hey")
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -40,13 +40,14 @@ const ViewMessages = (props) => {
     setRedirect(true)
   }
 
-  const deleteConversation = (conversation_id) => {
+  const deleteConversation = async (conversation_id) => {
     const requestOptions = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
     };
-    fetch(`http://localhost:4000/conversation/${conversation_id}`, requestOptions)
+    await fetch(`http://localhost:4000/conversation/${conversation_id}`, requestOptions)
+    getConversations()
   }
 
   const showMessages = () => {
@@ -68,7 +69,7 @@ const ViewMessages = (props) => {
         message = message.message
       }
       return (
-        <div>
+        <div key={index}>
           <ListItem onClick={() => redirectToMessages(userTo, userFrom)} button>
             <ListItemText primary={user} secondary={message} />
             <ListItemSecondaryAction>
