@@ -1,12 +1,16 @@
-# Capstone Backend
+# Capstone Frontend
 
-This project contains an API for a dog meeting application. The project is based off ruby on rails and contains several models. There are Users, Dogs, Conversations, and Messages. Each Dog belongs to a User, and every message belongs to one and only one conversation, finally each conversation has a foreign key to the two users involved in the conversation. 
+This project contains the frontend for our dog meeting application. You can view a map of all of the dogs around you and choose some to message for a playdate. You can also view all of your messages, and edit your account.
 
-## Finding available routes
-You can look in config/routes.rb to find all available routes for this API.
+## How this frontend is built
 
-## How to get started running this API
-This API is built with docker so running it is simple. First, make sure you have docker installed on your machine and then run the following commands.
+The frontend utilizes functional react with material-ui and react-router. 
+
+## How to get started running the frontend
+
+**You must ask for the .env file from another developer on the project**
+
+This frontend is built with docker so running it is simple. First, make sure you have docker installed on your machine and then run the following commands.
 
 Run these commands:
 docker-compose build
