@@ -25,7 +25,7 @@ const UserHome = () => {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
     };
-    await fetch("http://localhost:4000/users", requestOptions)
+    await fetch("http://localhost:4000/user", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         setUserFrom(data.user)
@@ -43,6 +43,7 @@ const UserHome = () => {
     fetch("http://localhost:4000/users", requestOptions)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setUsersDogs(data)
         setRenderMap(true)
       })

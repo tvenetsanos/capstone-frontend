@@ -5,15 +5,13 @@ import {
     Route,
     Link
 } from "react-router-dom";
-// import PrivateRoute from "./components/privateroute.js"
-//import Main from "./main.js"
 import SignUp from "./components/signup.js"
 import SignIn from "./components/signin.js"
 import UserHome from "./components/userHome.js"
 import PrivateRoute from "./components/privateroute.js"
 import MessageCenter from "./components/messageCenter.js"
 import EditAccount from "./components/editAccount.js"
-import ViewMessages from "./components/viewMessages.js"
+import ViewConversations from "./components/viewConversations.js"
 import Main from "./main.js"
 
 
@@ -30,11 +28,11 @@ class App extends Component {
                             <PrivateRoute component={EditAccount}
                                 path="/editAccount" exact>
                             </PrivateRoute>
-                            <PrivateRoute component={ViewMessages}
-                                path="/viewMessages" exact>
+                            <PrivateRoute component={ViewConversations}
+                                path="/conversations" exact>
                             </PrivateRoute>
                             <PrivateRoute component={MessageCenter}
-                                path="/message" exact>
+                                path="/conversation/:id" exact>
                             </PrivateRoute>
                             <Route path="/signup" exact>
                                 <SignUp />

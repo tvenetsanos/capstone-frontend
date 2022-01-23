@@ -34,7 +34,7 @@ const Header = (props) => {
   }
 
   const viewMessages = () => {
-    history.push("/viewMessages")
+    history.push("/conversations")
   }
 
   const editAccount = () => {

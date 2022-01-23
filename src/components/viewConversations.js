@@ -14,6 +14,7 @@ const ViewMessages = () => {
   const [userTo, setUserTo] = useState(null)
   const [userFrom, setUserFrom] = useState(null)
   const [redirect, setRedirect] = useState(false)
+  const [conversationId, setConversationId] = useState(0)
 
   useEffect(() => {
     getConversations()
@@ -34,9 +35,10 @@ const ViewMessages = () => {
       })
   }
   
-  const redirectToMessages = (userTo, userFrom) => {
+  const redirectToMessages = (userTo, userFrom, conversationId) => {
     setUserTo(userTo)
     setUserFrom(userFrom)
+    setConversationId(conversationId)
     setRedirect(true)
   }
 
@@ -70,7 +72,7 @@ const ViewMessages = () => {
       }
       return (
         <div key={index}>
-          <ListItem onClick={() => redirectToMessages(userTo, userFrom)} button>
+          <ListItem onClick={() => redirectToMessages(userTo, userFrom, conversation.conversation.id)} button>
             <ListItemText primary={user} secondary={message} />
             <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="delete" onClick={() => deleteConversation(conversation.conversation.id)}>
@@ -89,7 +91,7 @@ const ViewMessages = () => {
       <List component="nav" aria-label="mailbox folders">
         {showMessages()}
       </List>
-      {redirect && <Redirect to={{pathname: "/message", state: {userTo: userTo, userFrom: userFrom}}} />}
+      {redirect && <Redirect to={{pathname: `/conversation/${conversationId}`, state: {userTo: userTo, userFrom: userFrom}}} />}
     </div>
   )
 }
