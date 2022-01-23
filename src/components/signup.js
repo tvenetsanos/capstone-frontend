@@ -68,7 +68,7 @@ const SignUp = () => {
               lng: lng
             })
           };
-          fetch("http://localhost:4000/signup", requestOptions)
+          fetch("http://localhost:4000/users", requestOptions)
           .then(res => res.json())
           .then((data) => {
             handleAddDog(data.id)

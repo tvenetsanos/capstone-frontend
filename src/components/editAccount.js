@@ -24,7 +24,7 @@ const EditAccount = (props) => {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include"
     };
-    fetch(`http://localhost:4000/users`, requestOptions)
+    fetch(`http://localhost:4000/user`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
         setEmail(data.user.email)

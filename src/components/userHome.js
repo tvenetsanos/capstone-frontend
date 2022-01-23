@@ -57,7 +57,7 @@ const UserHome = () => {
   return (
     <div className="userHome">
         {renderMap && <Map usersDogs={usersDogs.users} lat={lat} lng={lng} redirect={redirectToMessageCenter} />}
-        {userTo && <Redirect to={{pathname: "/message", state: {userTo: userTo.id, userFrom: userFrom.id}}} />}
+        {userTo && <Redirect to={{pathname: "/conversation/0", state: {userTo: userTo.id, userFrom: userFrom.id}}} />}
     </div>
   );
 }
