@@ -46,7 +46,7 @@ const ViewMessages = () => {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
     };
-    await fetch(`http://localhost:4000/conversation/${conversation_id}`, requestOptions)
+    await fetch(`http://localhost:4000/conversations/${conversation_id}`, requestOptions)
     getConversations()
   }
 

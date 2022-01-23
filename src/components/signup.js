@@ -40,7 +40,7 @@ const SignUp = () => {
               user_id: user_id
             })
           };
-          fetch("http://localhost:4000/dog", requestOptions)
+          fetch("http://localhost:4000/dogs", requestOptions)
           .then(setRedirect(true))
       }
 

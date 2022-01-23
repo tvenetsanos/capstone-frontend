@@ -22,7 +22,7 @@ const MessageCenter = (props) => {
         second_user_id: props.location.state.userFrom
       })
     };
-    fetch(`http://localhost:4000/conversation`, requestOptions)
+    fetch(`http://localhost:4000/conversations`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
         setConversation(data.conversation)
@@ -37,7 +37,7 @@ const MessageCenter = (props) => {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include"
     };
-    fetch(`http://localhost:4000/conversation/${conversation_id}`, requestOptions)
+    fetch(`http://localhost:4000/conversations/${conversation_id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
         setMessages(data.messages)
@@ -56,7 +56,7 @@ const MessageCenter = (props) => {
         message: newMessage
       })
     };
-    fetch("http://localhost:4000/message", requestOptions)
+    fetch("http://localhost:4000/messages", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         setNewMessage("")
@@ -66,18 +66,18 @@ const MessageCenter = (props) => {
 
   const displayMessages = () => {
     if (messages) {
-      return messages.map((message, index) => {
+      return messages.map((message) => {
         let float;
         let color;
         if ("" + message.user_id !== "" + props.location.state.userFrom) {
           float = "left"
           color = "Grey"
-          return (<p key={index} className="message" style={{backgroundColor: color, marginRight: "25%"}}>{message.message}</p>)
+          return (<p key={message.id} className="message" style={{backgroundColor: color, marginRight: "25%"}}>{message.message}</p>)
         }
         else {
           float = "right"
           color = "#0078fe"
-          return (<p key={index} className="message" style={{backgroundColor: color, marginLeft: "25%"}}>{message.message}</p>)
+          return (<p key={message.id} className="message" style={{backgroundColor: color, marginLeft: "25%"}}>{message.message}</p>)
         }
       })
     }

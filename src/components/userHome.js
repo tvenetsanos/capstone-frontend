@@ -25,7 +25,7 @@ const UserHome = () => {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include",
     };
-    await fetch("http://localhost:4000/user", requestOptions)
+    await fetch("http://localhost:4000/users", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         setUserFrom(data.user)

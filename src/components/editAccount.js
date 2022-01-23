@@ -16,6 +16,7 @@ const EditAccount = (props) => {
   const [dogBreed, setDogBreed] = useState("")
   const [dogAge, setDogAge] = useState(0)
   const history = useHistory()
+  const [dogId, setDogId] = useState(0)
 
   useEffect(() => {
     const requestOptions = {
@@ -23,7 +24,7 @@ const EditAccount = (props) => {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include"
     };
-    fetch(`http://localhost:4000/user`, requestOptions)
+    fetch(`http://localhost:4000/users`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
         setEmail(data.user.email)
@@ -36,11 +37,11 @@ const EditAccount = (props) => {
         setDogName(data.dog.dog_name)
         setDogBreed(data.dog.breed)
         setDogAge(data.dog.age)
+        setDogId(data.dog.id)
       })
   }, [])
 
   const submitEditDog = () => {
-    console.log("hey")
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -51,11 +52,7 @@ const EditAccount = (props) => {
         breed: dogBreed
       })
     };
-    fetch(`http://localhost:4000/dog/update`, requestOptions)
-    .then((res) => res.json())
-      .then((data) => {
-        console.log(data)
-      })
+    fetch(`http://localhost:4000/dogs/${dogId}`, requestOptions)
   }
 
   const submitEditUser = () => {
@@ -73,7 +70,7 @@ const EditAccount = (props) => {
         city: city,
       })
     };
-    fetch(`http://localhost:4000/user/update`, requestOptions)
+    fetch(`http://localhost:4000/users`, requestOptions)
     .then((res) => res.json())
       .then((data) => {
         console.log(data)
@@ -92,7 +89,7 @@ const EditAccount = (props) => {
       headers: { 'Content-Type': 'application/json' },
       credentials: "include"
     };
-    fetch(`http://localhost:4000/user`, requestOptions)
+    fetch(`http://localhost:4000/users`, requestOptions)
     history.push("/")
   }
 
